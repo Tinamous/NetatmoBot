@@ -1,0 +1,21 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <MSBuildCommunityTasksPath>.</MSBuildCommunityTasksPath>
+  </PropertyGroup>
+  <Import Project=".build\MSBuild.Community.Tasks.Targets" />
+
+  <!-- Project files -->
+  <PropertyGroup>
+    <ProjectSolution>NetatmoBot.sln</ProjectSolution>
+    <VerisonFile>.\Version.txt</VerisonFile>
+    <Configuration Condition=" '$(Configuration)'=='' ">Debug</Configuration>
+    <CCNetLabel Condition=" '$(CCNetLabel)' == '' ">0.0.0.1</CCNetLabel>
+  </PropertyGroup>
+
+  <!-- Tools -->
+  <PropertyGroup>
+    <NUnitExe>packages\NUnit.Runners.2.6.3\tools\NUnit-Console.exe /nologo /framework:net-4.0</NUnitExe>
+  </PropertyGroup>
+  
+</Project>

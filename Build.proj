@@ -1,0 +1,111 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="BuildProperties.proj" />
+
+  <PropertyGroup>
+    <ReportsFolder>.\Build\Reports\</ReportsFolder>
+  </PropertyGroup>
+
+  <!-- ============================================================ -->
+  <!-- Clean                                                        -->
+  <!-- ============================================================ -->
+  <Target Name="Clean">
+    <Message Text="Clean $(Configuration)" />
+    <MSBuild Projects="$(ProjectSolution)" Properties="Configuration=$(Configuration)" Targets="Clean"/>
+  </Target>
+
+  <!-- ============================================================ -->
+  <!-- Build                                                        -->
+  <!-- ============================================================ -->
+  <Target Name="Build">
+    <Message Text="Building $(Configuration)" />
+
+    <!-- Update the version file in the web application -->
+    <CallTarget Targets="UpdateAssemblyInfo" />
+    <Attrib Files="$(VerisonFile)" Normal="true"/>
+    <WriteLinesToFile File="$(VerisonFile)" Lines="$(CCNetLabel)" Overwrite="true" />
+
+    <MSBuild Projects="$(ProjectSolution)" Properties="Configuration=$(Configuration)" />
+  </Target>
+
+  <!-- ============================================================ -->
+  <!-- Run Unit Tests                                               -->
+  <!-- ============================================================ -->
+  <Target Name="UnitTest">
+
+    <Message Text="Unit Tests..." />
+    <RemoveDir Directories="$(ReportsFolder)UnitTests" />
+    <MakeDir Directories="$(ReportsFolder)UnitTests" />
+
+    <CreateItem  Include=".\**\bin\$(Configuration)\*.UnitTests.dll;.\**\bin\$(Configuration)\*.Tests.dll" >
+      <Output TaskParameter="Include" ItemName="UnitTestDlls"/>
+    </CreateItem>
+
+    <Message Text="Unit Test Assemblies: %(UnitTestDlls.FileName)" />
+
+    <Exec Command='$(NUnitExe) "%(UnitTestDlls.FullPath)" /exclude=IntegrationTest,IntegrationTests /xml="$(ReportsFolder)UnitTests\%(UnitTestDlls.FileName).UnitTests.xml" ' />
+  </Target>
+
+  <!-- ============================================================ -->
+  <!-- Run Integration Tests -->
+  <!-- ============================================================ -->
+  <Target Name="IntegrationTest">
+
+    <Message Text="Integration Tests..." />
+    <RemoveDir Directories="$(ReportsFolder)IntegrationTests" />
+    <MakeDir Directories="$(ReportsFolder)IntegrationTests" />
+
+    <CreateItem  Include=".\**\bin\$(Configuration)\*.IntegrationTests.dll" >
+      <Output TaskParameter="Include" ItemName="IntegrationTestDlls"/>
+    </CreateItem>
+
+    <Message Text="Integration Test Assemblies: %(IntegrationTestDlls.FileName)" />
+
+    <Exec Command='$(NUnitExe) "%(IntegrationTestDlls.FullPath)" /xml="$(ReportsFolder)IntegrationTests\%(IntegrationTestDlls.FileName).IntegrationTests.xml" ' />
+  </Target>
+
+  <!-- ============================================================ -->
+  <!-- Update the Version and update the Setup projects to reflect the change. -->
+  <!-- ============================================================ -->
+  <Target Name="Version">
+
+    <!-- Create the versions file from the CCNet build number. -->
+    <Attrib Files="$(VerisonFile)" Normal="true"/>
+    <WriteLinesToFile File="$(VerisonFile)" Lines="$(CCNetLabel)" Overwrite="true" />
+
+    <Version VersionFile="$(VerisonFile)" RevisionType="None">
+      <Output TaskParameter="Major" PropertyName="Major" />
+      <Output TaskParameter="Minor" PropertyName="Minor" />
+      <Output TaskParameter="Build" PropertyName="Build" />
+      <Output TaskParameter="Revision" PropertyName="Revision" />
+    </Version>
+
+    <CreateProperty Value="$(Major).$(Minor).$(Build).$(Revision)">
+      <Output TaskParameter="Value" PropertyName="AppVersion" />
+    </CreateProperty>
+
+    <Message Text="App Version: $(AppVersion)"/>
+  </Target>
+
+  <!-- ============================================================ -->
+  <!-- Create AssemblyInfo file with version details                -->
+  <!-- ============================================================ -->
+  <Target Name="UpdateAssemblyInfo">
+    <Message Text="Setting Application version to $(CCNetLabel)" />
+
+    <ItemGroup>
+      <!-- Only update the SharedAssemblyInfo file(s).-->
+      <AllAssemblyVersionInfos Include=".\**\SharedAssemblyVersionInfo.cs"/>
+    </ItemGroup>
+    <Attrib Files="@(AllAssemblyVersionInfos)" ReadOnly="false"/>
+
+    <AssemblyInfo AssemblyTitle=""
+                  AssemblyProduct=""
+                  AssemblyCompany=""
+                  AssemblyCopyright=""
+                  AssemblyVersion="$(CCNetLabel)"
+                  AssemblyFileVersion="$(CCNetLabel)"
+                  CodeLanguage="CS"
+                  OutputFile="%(AllAssemblyVersionInfos.FullPath)" />
+  </Target>
+
+</Project>
