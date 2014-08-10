@@ -6,8 +6,8 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyCompany("Analysis UK Ltd")]
-[assembly: AssemblyProduct("Natatmo Client")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyProduct("NatatmoBot")]
+[assembly: AssemblyCopyright("(c) Analysis UK Ltd")]
 [assembly: AssemblyTrademark("")]
 
 // Make it easy to distinguish Debug and Release (i.e. Retail) builds;
