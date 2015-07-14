@@ -1,0 +1,18 @@
+﻿{
+    "body": {
+        "_id": "537765721d7759e9f70c6609",
+        "administrative": {
+            "country": "GB",
+            "feel_like_algo": 0,
+            "lang": "en-US",
+            "pressureunit": 0,
+            "reg_locale": "en",
+            "unit": 0,
+            "windunit": 1
+        },
+        "devices": [ "70:ee:50:03:78:3a" ],
+        "mail": "stephen.harrison@analysisuk.com"
+    },
+    "status": "ok",
+    "time_exec": 0.036320924758911, 
+    "time_server": 1436276718 }

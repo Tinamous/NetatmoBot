@@ -2,8 +2,9 @@ namespace NetatmoBot.Services.PublicDataModels
 {
     public class Place
     {
-        public decimal[] location { get; set; }
-        public decimal altitude { get; set; }
+        // Appears to be [lon,lat]
+        public double[] location { get; set; }
+        public double altitude { get; set; }
         public string timezone { get; set; }
 
         // Present in module list.

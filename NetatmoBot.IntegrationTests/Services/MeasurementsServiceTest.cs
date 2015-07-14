@@ -5,9 +5,10 @@ using NetatmoBot.Model;
 using NetatmoBot.Model.Measurements;
 using NetatmoBot.Model.Modules;
 using NetatmoBot.Services;
+using NetatmoBot.Services.Wrappers;
 using NUnit.Framework;
 
-namespace NetatmoBot.Tests.Services
+namespace NetatmoBot.IntegrationTests.Services
 {
     public class MeasurementsServiceTest
     {
@@ -21,8 +22,8 @@ namespace NetatmoBot.Tests.Services
             var authenticationService = new AuthenticationService();
             _authenticationToken = authenticationService.AuthenticateUser();
 
-            var userService = new UserService(_authenticationToken);
-            _user = userService.Get();
+            var userService = new UserService(_authenticationToken, new HttpWrapper());
+            _user = userService.Get().Result;
         }
 
         [Test]
@@ -30,15 +31,17 @@ namespace NetatmoBot.Tests.Services
         public void GetMeasurements_ForModule(Type moduleType)
         {
             // Arrange
-            var measurementService = new MeasurementsService(_authenticationToken);
             string firstDevice = _user.DeviceIds.First();
 
-            var devicesService = new DevicesService(_authenticationToken);
-            var stationDetails = devicesService.Get();
+            // Get the (rain) module to look up measurements from.
+            var devicesService = new DevicesService(_authenticationToken, new HttpWrapper());
+            var stationDetails = devicesService.Get().Result;
             Module module = stationDetails.Modules.First(x => x.GetType() == moduleType);
 
+            var measurementService = new MeasurementsService(_authenticationToken, new HttpWrapper());
+
             // Act
-            List<SensorMeasurement> measurements = measurementService.Get(firstDevice, module);
+            List<SensorMeasurement> measurements = measurementService.Get(firstDevice, module).Result;
 
             // Assert
             Assert.IsNotNull(measurements);

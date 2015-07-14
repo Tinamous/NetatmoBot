@@ -1,9 +1,9 @@
 ﻿using NetatmoBot.Model;
 using NetatmoBot.Services;
-using NetatmoBot.Services.AuthenticationModels;
+using NetatmoBot.Services.Wrappers;
 using NUnit.Framework;
 
-namespace NetatmoBot.Tests.Services
+namespace NetatmoBot.IntegrationTests.Services
 {
     [TestFixture]
     public class DevicesServiceTest
@@ -22,10 +22,10 @@ namespace NetatmoBot.Tests.Services
         public void GetDevices()
         {
             // Arrange
-            var devicesService = new DevicesService(_authenticationToken);
+            var devicesService = new DevicesService(_authenticationToken, new HttpWrapper());
 
             // Act
-            var stationDetails = devicesService.Get();
+            var stationDetails = devicesService.Get().Result;
 
             // Arrange
             Assert.IsNotNull(stationDetails, "Station Details");

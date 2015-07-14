@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetatmoBot.ConsoleHost", "NetatmoBot.ConsoleHost\NetatmoBot.ConsoleHost.csproj", "{F0079876-3F75-4655-AC0E-5DB36967BC09}"
 EndProject
@@ -27,6 +27,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{4906B3
 		NuGetPack.proj = NuGetPack.proj
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{6D534CD1-0C4B-4B9D-8B7E-27825F7EC388}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetatmoBot.IntegrationTests", "NetatmoBot.IntegrationTests\NetatmoBot.IntegrationTests.csproj", "{C4A8F964-B814-4FEA-8081-55ED100C16DD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{42C16228-19C4-4F5E-B592-BBE726AD22CA}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		Build.proj = Build.proj
+		BuildProperties.proj = BuildProperties.proj
+		LICENSE.txt = LICENSE.txt
+		NuGetPack.proj = NuGetPack.proj
+		README.md = README.md
+		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
+		SharedAssemblyVersionInfo.cs = SharedAssemblyVersionInfo.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,11 +61,18 @@ Global
 		{A84EA168-8CAF-4AF0-BF5E-BE8B81E3EF94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A84EA168-8CAF-4AF0-BF5E-BE8B81E3EF94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A84EA168-8CAF-4AF0-BF5E-BE8B81E3EF94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4A8F964-B814-4FEA-8081-55ED100C16DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4A8F964-B814-4FEA-8081-55ED100C16DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4A8F964-B814-4FEA-8081-55ED100C16DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4A8F964-B814-4FEA-8081-55ED100C16DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F0079876-3F75-4655-AC0E-5DB36967BC09} = {C60B80DD-706E-4E92-82A8-B0E6971D0089}
+		{7D0C3A35-2C98-4FE0-8B36-28CA51EE2ECE} = {6D534CD1-0C4B-4B9D-8B7E-27825F7EC388}
+		{A84EA168-8CAF-4AF0-BF5E-BE8B81E3EF94} = {6D534CD1-0C4B-4B9D-8B7E-27825F7EC388}
+		{C4A8F964-B814-4FEA-8081-55ED100C16DD} = {6D534CD1-0C4B-4B9D-8B7E-27825F7EC388}
 	EndGlobalSection
 EndGlobal

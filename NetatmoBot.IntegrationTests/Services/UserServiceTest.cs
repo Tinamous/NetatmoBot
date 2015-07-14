@@ -1,8 +1,10 @@
-﻿using NetatmoBot.Model;
+﻿using System.Threading.Tasks;
+using NetatmoBot.Model;
 using NetatmoBot.Services;
+using NetatmoBot.Services.Wrappers;
 using NUnit.Framework;
 
-namespace NetatmoBot.Tests.Services
+namespace NetatmoBot.IntegrationTests.Services
 {
     [TestFixture]
     public class UserServiceTest
@@ -18,13 +20,13 @@ namespace NetatmoBot.Tests.Services
         }
 
         [Test]
-        public void GetUser_ReturnsUser()
+        public async Task GetUser_ReturnsUser()
         {
             // Arrange
-            var userService = new UserService(_authenticationToken);
+            var userService = new UserService(_authenticationToken, new HttpWrapper());
 
             // Act
-            User user = userService.Get();
+            User user = await userService.Get();
 
             // Assert
             Assert.IsNotNull(user);

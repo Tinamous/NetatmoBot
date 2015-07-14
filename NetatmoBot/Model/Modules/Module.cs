@@ -29,10 +29,10 @@ namespace NetatmoBot.Model.Modules
         //public string Type { get; set; }
 
         // timestamp
-        public DateTime LastMessage { get; set; }
+        public DateTime? LastMessage { get; set; }
 
         // timestamp
-        public DateTime LastSeen { get; set; }
+        public DateTime? LastSeen { get; set; }
 
 
 

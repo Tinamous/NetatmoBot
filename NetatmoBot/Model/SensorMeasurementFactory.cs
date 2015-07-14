@@ -5,7 +5,7 @@ namespace NetatmoBot.Model
 {
     public static class SensorMeasurementFactory
     {
-        public static SensorMeasurement Create(string moduleKey, string measurementType, DateTime timeStamp, decimal sensorModuleValue)
+        public static SensorMeasurement Create(string moduleKey, string measurementType, DateTime? timeStamp, decimal sensorModuleValue)
         {
             switch (measurementType.ToLower())
             {

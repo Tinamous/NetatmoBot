@@ -10,9 +10,13 @@ namespace NetatmoBot.Extensions
             return Convert.ToInt64(since.TotalSeconds);
         }
 
-        public static DateTime FromUnixTicks(this DateTime date, long unixTicks)
+        public static DateTime? FromUnixTicks(this DateTime date, long? unixTicks)
         {
-            return new DateTime(1970, 1, 1).AddSeconds(unixTicks);
+            if (unixTicks.HasValue)
+            {
+                return new DateTime(1970, 1, 1).AddSeconds(unixTicks.Value);
+            }
+            return null;
         }
     }
 }

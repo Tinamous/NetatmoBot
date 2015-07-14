@@ -58,9 +58,42 @@ namespace NetatmoBot.Services
             return new AuthenticationToken
             {
                 Token = authenticationResponse.access_token,
-                RefreshToken = authenticationResponse.access_token,
+                RefreshToken = authenticationResponse.refresh_token,
                 ExpiresAt = DateTime.UtcNow.AddSeconds(authenticationResponse.expires_in)
             };
+        }
+
+        public AuthenticationToken RefreshToken(AuthenticationToken authenticationToken)
+        {
+            var client = new HttpClient();
+
+            var keyValuePairs = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("grant_type", "refresh_token"),
+                new KeyValuePair<string, string>("client_id", _clientId),
+                new KeyValuePair<string, string>("client_secret", _clientSecret),
+                new KeyValuePair<string, string>("refresh_token", authenticationToken.RefreshToken),
+            };
+
+            HttpContent request = new FormUrlEncodedContent(keyValuePairs);
+            HttpResponseMessage response = client.PostAsync(_uri, request).Result;
+            if (!response.IsSuccessStatusCode)
+            {
+                Trace.WriteLine("Authentication Refresh Failed");
+                throw new NetatmoReadException("Authentication refresh token failed. Status Code: " + response.StatusCode);
+            }
+
+            var authenticationResponse = response.Content.ReadAsAsync<AuthenticationResponse>().Result;
+            Trace.WriteLine(authenticationResponse.access_token);
+            Trace.WriteLine(authenticationResponse.expires_in);
+            Trace.WriteLine(authenticationResponse.refresh_token);
+
+            // Update the existing token
+            authenticationToken.Token = authenticationResponse.access_token;
+            authenticationToken.ExpiresAt = DateTime.UtcNow.AddSeconds(authenticationResponse.expires_in);
+            authenticationToken.RefreshToken = authenticationResponse.refresh_token;
+
+            return authenticationToken;
         }
     }
 }

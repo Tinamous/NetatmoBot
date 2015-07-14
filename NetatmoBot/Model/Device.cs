@@ -13,10 +13,10 @@ namespace NetatmoBot.Model
 
         public string Ip { get; set; }
 
-        public DateTime LastFirmwareUpdate { get; set; }
-        public DateTime LastRadioStoredOn { get; set; }
-        public DateTime LastStatusStoredOn { get; set; }
-        public DateTime LastUpgradeOn { get; set; }
+        public DateTime? LastFirmwareUpdate { get; set; }
+        public DateTime? LastRadioStoredOn { get; set; }
+        public DateTime? LastStatusStoredOn { get; set; }
+        public DateTime? LastUpgradeOn { get; set; }
 
         public string StationName { get; set; }
         public string ModuleName { get; set; }
@@ -37,7 +37,7 @@ namespace NetatmoBot.Model
 
         public bool CO2Calibrating { get; set; }
 
-        public DateTime SetupOn { get; set; }
+        public DateTime? SetupOn { get; set; }
 
         //public IList<MetroAlarm> meteo_alarms { get; set; }
 

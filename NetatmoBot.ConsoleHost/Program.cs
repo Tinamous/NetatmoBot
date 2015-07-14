@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using NetatmoBot.Model;
 using NetatmoBot.Model.Measurements;
 using NetatmoBot.Services;
+using NetatmoBot.Services.Wrappers;
 
 namespace NetatmoBot.ConsoleHost
 {
@@ -34,26 +36,29 @@ namespace NetatmoBot.ConsoleHost
         private static void GetRainMeasurements()
         {
             var timeBetweenMeasurements = new TimeSpan(0, 0, 1, 0);
-            var publicDataService = new PublicDataService(_authenticationToken);
+            var publicDataService = new PublicDataService(_authenticationToken, new HttpWrapper());
 
-            double latitute = Convert.ToDouble(ConfigurationManager.AppSettings["Latitude"]);
-            double longitude = Convert.ToDouble(ConfigurationManager.AppSettings["Longitude"]);
-
-            var center = new LatLongPoint(latitute, longitude);
-            LocationBoundry boundry = LocationBoundry.ComputeBoundry(center);
+            var boundry = GetLocationBoundry();
 
             Console.WriteLine("Count\tWith gauge\tWith Rain\tAverage\tMin\tMax\t");    
             do
             {
+                if (_authenticationToken.IsCloseToExpiry())
+                {
+                    RefreshToken();
+                }
+
                 // Get the public data
-                PublicData publicData = publicDataService.Get(boundry);
+                PublicData publicData = publicDataService.Get(boundry).Result;
 
                 // The total number of stations returned in the geographic area.
                 int totalNumberOfStations = publicData.Stations.Count();
+                Trace.WriteLine("Total number of stations: " + totalNumberOfStations);
 
                 // The stations that have a rain gauge.
                 var rainStations = GetStationsWithRainSensors(publicData);
                 int numberOfStationsWithRainGauge = rainStations.Count();
+                Trace.WriteLine("Number of stations with rain gauge: " + numberOfStationsWithRainGauge);
 
                 // Stations where the rain gauge is reporting a level above the threshold.
                 var stationsWithRain = rainStations.Where(x => x.Value > RainingThreshold).ToList();
@@ -63,6 +68,24 @@ namespace NetatmoBot.ConsoleHost
                 WaitForNextMeasurementTime(timeBetweenMeasurements);
 
             } while (!CancellationToken.IsCancellationRequested);
+        }
+
+        private static LocationBoundry GetLocationBoundry()
+        {
+            double latitute = Convert.ToDouble(ConfigurationManager.AppSettings["Latitude"]);
+            double longitude = Convert.ToDouble(ConfigurationManager.AppSettings["Longitude"]);
+
+            var center = new LatLongPoint(latitute, longitude);
+
+            // Generate a boundry 2km around the center point.
+            LocationBoundry boundry = LocationBoundry.ComputeBoundry(center, 20);
+            return boundry;
+        }
+
+        private static void RefreshToken()
+        {
+            var authenticationService = new AuthenticationService();
+            _authenticationToken = authenticationService.RefreshToken(_authenticationToken);
         }
 
         private static void WaitForNextMeasurementTime(TimeSpan sleepTime)

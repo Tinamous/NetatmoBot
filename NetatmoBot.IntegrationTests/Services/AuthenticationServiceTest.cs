@@ -2,7 +2,7 @@
 using NetatmoBot.Services;
 using NUnit.Framework;
 
-namespace NetatmoBot.Tests.Services
+namespace NetatmoBot.IntegrationTests.Services
 {
     [TestFixture]
     public class AuthenticationServiceTest

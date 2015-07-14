@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Threading.Tasks;
 using NetatmoBot.Exceptions;
 using NetatmoBot.Extensions;
 using NetatmoBot.Model;
 using NetatmoBot.Model.Measurements;
 using NetatmoBot.Model.Modules;
-using NetatmoBot.Services.AuthenticationModels;
 using NetatmoBot.Services.MeasurementsModels;
+using NetatmoBot.Services.Wrappers;
 
 namespace NetatmoBot.Services
 {
@@ -16,14 +17,17 @@ namespace NetatmoBot.Services
     {
         private readonly Uri _uri = new Uri("https://api.netatmo.net/api/getmeasure");
         private readonly AuthenticationToken _authenticationToken;
+        private readonly IHttpWrapper _httpWrapper;
 
-        public MeasurementsService(AuthenticationToken authenticationToken)
+        public MeasurementsService(AuthenticationToken authenticationToken, IHttpWrapper httpWrapper)
         {
             if (authenticationToken == null) throw new ArgumentNullException("authenticationToken");
+            if (httpWrapper == null) throw new ArgumentNullException("httpWrapper");
             _authenticationToken = authenticationToken;
+            _httpWrapper = httpWrapper;
         }
 
-        public List<SensorMeasurement> Get(string deviceId, Module module)
+        public async Task<List<SensorMeasurement>> Get(string deviceId, Module module)
         {
             string type = GetMeasurementType(module);
             string scale = "max";
@@ -38,25 +42,15 @@ namespace NetatmoBot.Services
                 scale);
 
             // Optional.
-            long dateBegin = DateTime.UtcNow.AddMinutes(-240).ToUnixTicks(); // 1347556500;
+            long dateBegin = DateTime.UtcNow.AddHours(-4).ToUnixTicks();
             url += string.Format("&date_begin={0}", dateBegin);
 
             // Optional
             //long dateEnd = 1347556500;
             //url += string.Format("&date_end={0}", dateEnd);
 
-            var client = new HttpClient();
-            HttpResponseMessage response = client.GetAsync(url).Result;
-
-            if (!response.IsSuccessStatusCode)
-            {
-                Trace.WriteLine("Measurements Failed.");
-                throw new NetatmoReadException("Failed to read measurements. Status code: " + response.StatusCode);
-            }
-
-            var publicDataResponse = response.Content.ReadAsAsync<MeasureResponse>().Result;
-
-            return Map(publicDataResponse.body, type);
+            var measureResponse = await _httpWrapper.ReadGet<MeasureResponse>(url);
+            return Map(measureResponse.body, type);
         }
 
         private static string GetMeasurementType(Module module)
@@ -96,7 +90,7 @@ namespace NetatmoBot.Services
             foreach (var measurements in measureBodyItem.value)
             {
                 sensorMeasurements.AddRange(Map(measurements, types, timeStamp));
-                timeStamp+=measureBodyItem.step_time;
+                timeStamp += measureBodyItem.step_time;
             }
 
             return sensorMeasurements;
