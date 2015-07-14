@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <projectUrl>https://github.com/Tinamous/NetatmoBot</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Interface to Netatmo api</description>
+    <releaseNotes>Initial Version.</releaseNotes>
+    <copyright>Copyright Analysis UK Ltd 2015</copyright>
+    <tags>Netatmo</tags>
+  </metadata>
+</package>

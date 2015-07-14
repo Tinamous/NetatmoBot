@@ -2,7 +2,7 @@
 <!-- and deploying to the appropriate locations -->
 <Project DefaultTargets="Package" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <Import Project="BuildProperties.proj" />
-  
+
   <!-- ============================================================ -->
   <!-- Prepare the nuget packages (CCNET Target)               -->
   <!-- ============================================================ -->
@@ -18,32 +18,32 @@
   <!-- Publish deployment package to MyGet                          -->
   <!-- ============================================================ -->
   <Target Name="PublishToMyGet">
-	  <Message Text="Packaged NuGet/Octopus deploy to $(ReleasesFolder)NuGet\$(Configuration)" Importance="high" />
-	
-	<!-- Pick up the nupkg file -->
-  	<CreateItem  Include="$(NuGetOutputDirectory)\*.nupkg" >
-		<Output TaskParameter="Include" ItemName="NuPkgFiles"/>
-	</CreateItem>
+    <Message Text="Packaged NuGet/Octopus deploy to $(ReleasesFolder)NuGet\$(Configuration)" Importance="high" />
 
-	<Message Text="Publishing NuGet .nupkg files: %(NuPkgFiles.FileName)" />
+    <!-- Pick up the nupkg file -->
+    <CreateItem  Include="$(NuGetOutputDirectory)\*.nupkg" >
+      <Output TaskParameter="Include" ItemName="NuPkgFiles"/>
+    </CreateItem>
 
-	<Exec Command='$(NuGet) push "%(NuPkgFiles.FullPath)" $(MyGetApiKey) -Source $(MyGetServer)' />
+    <Message Text="Publishing NuGet .nupkg files: %(NuPkgFiles.FileName)" />
+
+    <Exec Command='$(NuGet) push "%(NuPkgFiles.FullPath)" $(MyGetApiKey) -Source $(MyGetServer)' />
   </Target>
 
   <!-- ============================================================ -->
   <!-- Publish deployment package to local NuGet folder             -->
   <!-- ============================================================ -->
   <Target Name="PublishToLocal">
-	<Message Text="Packaged NuGet/Octopus deploy to $(LocalNuGetServer)" Importance="high" />
-	<MakeDir Directories="$(LocalNuGetServer)" />
-	
-	<!-- Pick up the nupkg file -->
-  	<CreateItem  Include="$(NuGetOutputDirectory)\*.nupkg" >
-		<Output TaskParameter="Include" ItemName="NuPkgFiles"/>
-	</CreateItem>
+    <Message Text="Packaged NuGet/Octopus deploy to $(LocalNuGetServer)" Importance="high" />
+    <MakeDir Directories="$(LocalNuGetServer)" />
 
-	<Message Text="Publishing NuGet folder $(LocalNuGetServer)" />
-	<Copy SourceFiles="@(NuPkgFiles)" DestinationFolder="$(LocalNuGetServer)" />
+    <!-- Pick up the nupkg file -->
+    <CreateItem  Include="$(NuGetOutputDirectory)\*.nupkg" >
+      <Output TaskParameter="Include" ItemName="NuPkgFiles"/>
+    </CreateItem>
+
+    <Message Text="Publishing NuGet folder $(LocalNuGetServer)" />
+    <Copy SourceFiles="@(NuPkgFiles)" DestinationFolder="$(LocalNuGetServer)" />
   </Target>
 
 </Project>

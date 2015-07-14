@@ -13,9 +13,26 @@
     <CCNetLabel Condition=" '$(CCNetLabel)' == '' ">0.0.0.1</CCNetLabel>
   </PropertyGroup>
 
+  <!-- Deployment Settings -->
+  <PropertyGroup>
+    <!-- NuGet -->
+    <MyGetServer Condition=" '$(MyGetPublicServer)'=='' ">https://www.myget.org/F/tinamous-public/api/v2/package</MyGetServer>
+
+    <!-- Local folder for NuGet packages to be copied to -->
+    <!-- This is not for deployment NuGet packages -->
+    <LocalNuGetServer Condition=" '$(LocalNuGetServer)'=='' ">C:\NuGetDev</LocalNuGetServer>
+    <NuGetOutputDirectory>.\Build\NuGetPackages</NuGetOutputDirectory>
+  </PropertyGroup>
+
+  <!-- List of projects that should have NuGet packages created for them -->
+  <ItemGroup>
+    <NugetProjects Include=".\NetatmoBot\NetatmoBot.csproj" />
+  </ItemGroup>
+
   <!-- Tools -->
   <PropertyGroup>
     <NUnitExe>packages\NUnit.Runners.2.6.3\tools\NUnit-Console.exe /nologo /framework:net-4.0</NUnitExe>
+    <NuGet>packages\NuGet.CommandLine.2.8.5\tools\NuGet.exe</NuGet>
   </PropertyGroup>
-  
+
 </Project>

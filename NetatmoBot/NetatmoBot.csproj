@@ -50,9 +50,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WebApiRestService.WebApiClient">
-      <HintPath>..\packages\WebApiRestService.WebApiClient.1.1\lib\portable-net45+win+wpa81+wp80\WebApiRestService.WebApiClient.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs">
