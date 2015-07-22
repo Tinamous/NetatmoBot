@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8CD2533C-0B21-4B17-8087-90F464108B48}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NetatmoBot.Net45</RootNamespace>
+    <AssemblyName>NetatmoBot.Net45</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\NetatmoBot\Exceptions\NetatmoReadException.cs">
+      <Link>Exceptions\NetatmoReadException.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Extensions\DateExtension.cs">
+      <Link>Extensions\DateExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Helpers\Location\LocationHelper.cs">
+      <Link>Helpers\Location\LocationHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\AuthenticationToken.cs">
+      <Link>Model\AuthenticationToken.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\Device.cs">
+      <Link>Model\Device.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\Distance.cs">
+      <Link>Model\Distance.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\DistanceUnit.cs">
+      <Link>Model\DistanceUnit.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\LatLongPoint.cs">
+      <Link>Model\LatLongPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\LocationBoundry.cs">
+      <Link>Model\LocationBoundry.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\Measurements\CarbonDioxideMeasurement.cs">
+      <Link>Model\Measurements\CarbonDioxideMeasurement.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\Measurements\GenericMeasurement.cs">
+      <Link>Model\Measurements\GenericMeasurement.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\Measurements\HumidityMeasurement.cs">
+      <Link>Model\Measurements\HumidityMeasurement.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\Measurements\NoiseMeasurement.cs">
+      <Link>Model\Measurements\NoiseMeasurement.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\Measurements\PressureMeasurement.cs">
+      <Link>Model\Measurements\PressureMeasurement.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\Measurements\RainMeasurement.cs">
+      <Link>Model\Measurements\RainMeasurement.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\Measurements\SensorMeasurement.cs">
+      <Link>Model\Measurements\SensorMeasurement.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\Measurements\TemperatureMeasurement.cs">
+      <Link>Model\Measurements\TemperatureMeasurement.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\ModuleFactory.cs">
+      <Link>Model\ModuleFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\Modules\GenericModule.cs">
+      <Link>Model\Modules\GenericModule.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\Modules\IndoorModule.cs">
+      <Link>Model\Modules\IndoorModule.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\Modules\MainModule.cs">
+      <Link>Model\Modules\MainModule.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\Modules\Module.cs">
+      <Link>Model\Modules\Module.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\Modules\OutdoorModule.cs">
+      <Link>Model\Modules\OutdoorModule.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\Modules\RainModule.cs">
+      <Link>Model\Modules\RainModule.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\PublicData.cs">
+      <Link>Model\PublicData.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\PublicDataStation.cs">
+      <Link>Model\PublicDataStation.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\SensorMeasurementFactory.cs">
+      <Link>Model\SensorMeasurementFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\StationDevices.cs">
+      <Link>Model\StationDevices.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\StationPlace.cs">
+      <Link>Model\StationPlace.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\User.cs">
+      <Link>Model\User.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Model\UserAdministrativeInfo.cs">
+      <Link>Model\UserAdministrativeInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\AuthenticationModels\AuthenticationResponse.cs">
+      <Link>Services\AuthenticationModels\AuthenticationResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\AuthenticationService.cs">
+      <Link>Services\AuthenticationService.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\DevicesModels\DeviceListResponse.cs">
+      <Link>Services\DevicesModels\DeviceListResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\DevicesModels\DeviceListResponseBodyItem.cs">
+      <Link>Services\DevicesModels\DeviceListResponseBodyItem.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\DevicesModels\DeviceResponseItem.cs">
+      <Link>Services\DevicesModels\DeviceResponseItem.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\DevicesModels\MetroAlarm.cs">
+      <Link>Services\DevicesModels\MetroAlarm.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\DevicesModels\ModuleResponseItem.cs">
+      <Link>Services\DevicesModels\ModuleResponseItem.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\DevicesService.cs">
+      <Link>Services\DevicesService.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\Mapping\DeviceMapper.cs">
+      <Link>Services\Mapping\DeviceMapper.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\Mapping\StationPlaceMapper.cs">
+      <Link>Services\Mapping\StationPlaceMapper.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\Mapping\UserResponseMapper.cs">
+      <Link>Services\Mapping\UserResponseMapper.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\MeasurementsModels\MeasureBodyItem.cs">
+      <Link>Services\MeasurementsModels\MeasureBodyItem.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\MeasurementsModels\MeasureResponse.cs">
+      <Link>Services\MeasurementsModels\MeasureResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\MeasurementsService.cs">
+      <Link>Services\MeasurementsService.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\PublicDataModels\Measurement.cs">
+      <Link>Services\PublicDataModels\Measurement.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\PublicDataModels\Place.cs">
+      <Link>Services\PublicDataModels\Place.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\PublicDataModels\PublicDataResponse.cs">
+      <Link>Services\PublicDataModels\PublicDataResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\PublicDataModels\PublicDataResponseItem.cs">
+      <Link>Services\PublicDataModels\PublicDataResponseItem.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\PublicDataService.cs">
+      <Link>Services\PublicDataService.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\UserDataModels\TimeStamp.cs">
+      <Link>Services\UserDataModels\TimeStamp.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\UserDataModels\UserAdministrative.cs">
+      <Link>Services\UserDataModels\UserAdministrative.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\UserDataModels\UserBody.cs">
+      <Link>Services\UserDataModels\UserBody.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\UserDataModels\UserResponse.cs">
+      <Link>Services\UserDataModels\UserResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\UserService.cs">
+      <Link>Services\UserService.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\Wrappers\HttpWrapper.cs">
+      <Link>Services\Wrappers\HttpWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\NetatmoBot\Services\Wrappers\IHttpWrapper.cs">
+      <Link>Services\Wrappers\IHttpWrapper.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

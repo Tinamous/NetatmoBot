@@ -43,6 +43,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		SharedAssemblyVersionInfo.cs = SharedAssemblyVersionInfo.cs
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetatmoBot.Net45", "NetatmoBot.Net45\NetatmoBot.Net45.csproj", "{8CD2533C-0B21-4B17-8087-90F464108B48}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,10 @@ Global
 		{C4A8F964-B814-4FEA-8081-55ED100C16DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4A8F964-B814-4FEA-8081-55ED100C16DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4A8F964-B814-4FEA-8081-55ED100C16DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CD2533C-0B21-4B17-8087-90F464108B48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CD2533C-0B21-4B17-8087-90F464108B48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CD2533C-0B21-4B17-8087-90F464108B48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CD2533C-0B21-4B17-8087-90F464108B48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,5 +80,6 @@ Global
 		{7D0C3A35-2C98-4FE0-8B36-28CA51EE2ECE} = {6D534CD1-0C4B-4B9D-8B7E-27825F7EC388}
 		{A84EA168-8CAF-4AF0-BF5E-BE8B81E3EF94} = {6D534CD1-0C4B-4B9D-8B7E-27825F7EC388}
 		{C4A8F964-B814-4FEA-8081-55ED100C16DD} = {6D534CD1-0C4B-4B9D-8B7E-27825F7EC388}
+		{8CD2533C-0B21-4B17-8087-90F464108B48} = {6D534CD1-0C4B-4B9D-8B7E-27825F7EC388}
 	EndGlobalSection
 EndGlobal
