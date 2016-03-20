@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using NetatmoBot.Extensions;
+﻿using NetatmoBot.Extensions;
 using NetatmoBot.Model;
 using NetatmoBot.Model.Measurements;
 using NetatmoBot.Services.Mapping;
 using NetatmoBot.Services.PublicDataModels;
 using NetatmoBot.Services.Wrappers;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace NetatmoBot.Services
 {
@@ -28,7 +29,8 @@ namespace NetatmoBot.Services
 
         public async Task<PublicData> Get(LocationBoundry boundry)
         {
-            string url = string.Format("{0}?access_token={1}&lat_ne={2}&lon_ne={3}&lat_sw={4}&lon_sw={5}&filter={6}",
+            string url = string.Format(CultureInfo.InvariantCulture, 
+                "{0}?access_token={1}&lat_ne={2}&lon_ne={3}&lat_sw={4}&lon_sw={5}&filter={6}",
                 _uri,
                 _authenticationToken.Token,
                 boundry.NorthEast.Latitude,
