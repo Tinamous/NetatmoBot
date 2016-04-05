@@ -20,6 +20,12 @@ namespace NetatmoBot.Services
             _clientSecret = System.Configuration.ConfigurationManager.AppSettings["Netatmo.ClientSecret"];
         }
 
+        public AuthenticationService(string clientId, string clientSecret)
+        {
+            _clientId = clientId;
+            _clientSecret = clientSecret;
+        }
+
         public AuthenticationToken AuthenticateUser()
         {
             string userName = System.Configuration.ConfigurationManager.AppSettings["Netatmo.UserName"];
