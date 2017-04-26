@@ -28,29 +28,29 @@ namespace NetatmoBot.Services
 
         public async Task<PublicData> Get(LocationBoundry boundry)
         {
-            string url = string.Format("{0}?access_token={1}&lat_ne={2}&lon_ne={3}&lat_sw={4}&lon_sw={5}&filter={6}",
-                _uri,
-                _authenticationToken.Token,
-                boundry.NorthEast.Latitude,
-                boundry.NorthEast.Longitude,
-                boundry.SouthWest.Latitude,
-                boundry.SouthWest.Longitude,
-                false);
+            string url = string.Format(
+                    "{0}?access_token={1}&lat_ne={2}&lon_ne={3}&lat_sw={4}&lon_sw={5}&filter={6}",
+                    _uri,
+                    _authenticationToken.Token,
+                    boundry.NorthEast.Latitude,
+                    boundry.NorthEast.Longitude,
+                    boundry.SouthWest.Latitude,
+                    boundry.SouthWest.Longitude,
+                    false);
 
             Trace.WriteLine("NE:" + boundry.NorthEast);
             Trace.WriteLine("SW:" + boundry.SouthWest);
 
-            return await _httpWrapper
-                .ReadGet<PublicDataResponse>(url)
-                .ContinueWith(result =>
+            try
             {
-                if (result.IsCompleted && !result.IsFaulted)
-                {
-                    return Map(result.Result);
-                }
+                var result = await _httpWrapper.ReadGet<PublicDataResponse>(url);
+                return Map(result);
+            }
+            catch (Exception ex)
+            {
                 Trace.WriteLine("Url: " + url);
-                throw new Exception("Error getting public data.", result.Exception);
-            });
+                throw new Exception("Error getting public data.", ex);
+            }
         }
 
         private PublicData Map(PublicDataResponse publicDataResponse)
@@ -112,6 +112,12 @@ namespace NetatmoBot.Services
                 return measurements;
             }
 
+            if (measurement.IsWind())
+            {
+                measurements.Add(CreateWindnMeasurement(moduleKey, measurement));
+                return measurements;
+            }
+
             if (measurement.type == null)
             {
                 Trace.WriteLine("Measurement type null for module: " + moduleKey);
@@ -131,6 +137,33 @@ namespace NetatmoBot.Services
             }
 
             return measurements;
+        }
+
+        private static SensorMeasurement CreateWindnMeasurement(string moduleKey, Measurement measurement)
+        {
+            DateTime? date = DateTime.Now.FromUnixTicks(measurement.wind_timeutc);
+            var value = measurement.wind_strength;
+            if (!value.HasValue)
+            {
+                return null;
+            }
+
+            var rainMeasurement = new WindMeasurement(moduleKey, date, value.Value);
+            if (measurement.wind_angle.HasValue)
+            {
+                rainMeasurement.WindAngle = measurement.wind_angle.Value;
+            }
+
+            if (measurement.gust_strength.HasValue)
+            {
+                rainMeasurement.GustStrength = measurement.gust_strength.Value;
+            }
+
+            if (measurement.gust_angle.HasValue)
+            {
+                rainMeasurement.GustAngle = measurement.gust_angle.Value;
+            }
+            return rainMeasurement;
         }
 
         private static SensorMeasurement CreateRainMeasurement(string moduleKey, Measurement measurement)

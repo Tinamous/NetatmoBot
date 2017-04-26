@@ -15,8 +15,9 @@ namespace NetatmoBot.ConsoleHost
     internal class Program
     {
         private static AuthenticationToken _authenticationToken;
-        private const decimal RainingThreshold = 0.1M;
+        private const decimal RainingThreshold = 0.15M;
         static readonly CancellationTokenSource CancellationToken = new CancellationTokenSource();
+        private static LatLongPoint _center;
 
         private static void Main(string[] args)
         {
@@ -40,7 +41,7 @@ namespace NetatmoBot.ConsoleHost
 
             var boundry = GetLocationBoundry();
 
-            Console.WriteLine("Count\tWith gauge\tWith Rain\tAverage\tMin\tMax\t");    
+            Console.WriteLine("Count\tRain gauges\tWind gauges\tWith Rain\tAverage\tMin\tMax\t");    
             do
             {
                 if (_authenticationToken.IsCloseToExpiry())
@@ -63,11 +64,77 @@ namespace NetatmoBot.ConsoleHost
                 // Stations where the rain gauge is reporting a level above the threshold.
                 var stationsWithRain = rainStations.Where(x => x.Value > RainingThreshold).ToList();
 
-                ShowComputedStatistics(totalNumberOfStations, numberOfStationsWithRainGauge, stationsWithRain);
+                var windStations = GetStationsWithWindSensors(publicData);
+                int numberOfStationsWithWindGauge = windStations.Count();
+                Trace.WriteLine("Number of stations with wind gauge: " + numberOfStationsWithWindGauge);
+
+
+                ShowComputedStatistics(totalNumberOfStations, numberOfStationsWithRainGauge, stationsWithRain, numberOfStationsWithWindGauge);
+
+                ShowStationDetails(publicData.Stations);
+
 
                 WaitForNextMeasurementTime(timeBetweenMeasurements);
 
             } while (!CancellationToken.IsCancellationRequested);
+        }
+
+        private static List<PublicDataStation> GetStationsWithWindSensors(PublicData publicData)
+        {
+            return publicData.Stations.Where(x => x.HasWindGauge()).ToList();
+        }
+
+        private static void ShowStationDetails(List<PublicDataStation> publicDataStations)
+        {
+            var stationsWithRainGauge = publicDataStations.Where(x => x.HasRainGauge()).ToList();
+            var stationsWithRain = stationsWithRainGauge.Where(x => x.IsItRaining(RainingThreshold)).ToList();
+
+            int i = 0;
+            int lastDistance = 0;
+            PublicDataStation closestStationWithRain = null;
+
+            foreach (PublicDataStation publicDataStation in stationsWithRain)
+            {
+                var rain = publicDataStation.Measurements.First(y => y is RainMeasurement);
+                Distance distanceKM = publicDataStation.ComputeDistanceAway(_center);
+                int distanceMeters = Convert.ToInt32(distanceKM.Value);
+                if (i == 0)
+                {
+                    lastDistance = distanceMeters;
+                    closestStationWithRain = publicDataStation;
+                } 
+                else 
+                {
+                    if (lastDistance < distanceMeters)
+                    {
+                        lastDistance = distanceMeters;
+                        closestStationWithRain = publicDataStation;
+                    }
+                }
+
+                var details = string.Format("Station: {0}. Distance: {1}, Rain Level: {2}", i, distanceMeters , rain.Value);
+                Console.WriteLine(details);
+
+                i++;
+            }
+
+            if (closestStationWithRain != null)
+            {
+                Console.WriteLine("Closest Station Id = " + closestStationWithRain.Id);
+                double closest = closestStationWithRain.ComputeDistanceAway(_center).Value;
+
+                var stationsCloser =
+                    stationsWithRainGauge
+                    .Where(x => x.ComputeDistanceAway(_center).Value < closest)
+                    .ToList();
+
+                Console.WriteLine("There are " + stationsCloser.Count + " stations closer without rain (that have a rain gauge)");
+                foreach (var publicDataStation in stationsCloser)
+                {
+                    var details = string.Format("Station: {0}. Distance: {1}", publicDataStation.Id, publicDataStation.ComputeDistanceAway(_center));
+                    Console.WriteLine(details);
+                }
+            }
         }
 
         private static LocationBoundry GetLocationBoundry()
@@ -75,10 +142,10 @@ namespace NetatmoBot.ConsoleHost
             double latitute = Convert.ToDouble(ConfigurationManager.AppSettings["Latitude"]);
             double longitude = Convert.ToDouble(ConfigurationManager.AppSettings["Longitude"]);
 
-            var center = new LatLongPoint(latitute, longitude);
+            _center = new LatLongPoint(latitute, longitude);
 
             // Generate a boundry 2km around the center point.
-            LocationBoundry boundry = LocationBoundry.ComputeBoundry(center, 20);
+            LocationBoundry boundry = LocationBoundry.ComputeBoundry(_center, 20);
             return boundry;
         }
 
@@ -117,20 +184,22 @@ namespace NetatmoBot.ConsoleHost
             return rainStations;
         }
 
-        private static void ShowComputedStatistics(int totalStations, int withRainGauge, IList<SensorMeasurement> measurements)
+        private static void ShowComputedStatistics(int totalStations, int withRainGauge, IList<SensorMeasurement> measurements, int numberOfStationsWithWindGauge)
         {
+            int rounding = 3;
             Console.Write(totalStations + "\t");
             Console.Write(withRainGauge + "\t\t");
+            Console.Write(numberOfStationsWithWindGauge+ "\t\t");
 
             int countWithRain = measurements.Count;
             Console.Write(countWithRain+ "\t\t");
 
             if (countWithRain > 0)
             {
-                decimal average = Math.Round(measurements.Average(x => x.Value),2);
+                decimal average = Math.Round(measurements.Average(x => x.Value), rounding);
 
-                decimal min = measurements.Min(x => x.Value);
-                decimal max = measurements.Max(x => x.Value);
+                decimal min = Math.Round(measurements.Min(x => x.Value), rounding);
+                decimal max = Math.Round(measurements.Max(x => x.Value), rounding);
 
                 Console.Write(average + "\t");
                 Console.Write(min + "\t");
@@ -139,6 +208,7 @@ namespace NetatmoBot.ConsoleHost
             else
             {
                 Console.Write("It's Not Raining :-)");
+               
             }
             Console.WriteLine();
         }

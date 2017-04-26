@@ -1,6 +1,4 @@
-﻿using NetatmoBot.Helpers.Location;
-
-namespace NetatmoBot.Model
+﻿namespace NetatmoBot.Model
 {
     public class Distance
     {
@@ -21,5 +19,33 @@ namespace NetatmoBot.Model
                     return Value.ToString();
             }
         }
+
+        //private static Distance CreateDistanceByUnit(DistanceUnit unit, double distanceMiles)
+        //{
+        //    switch (unit)
+        //    {
+        // Assumes base unit is miles which it is not now, it is meters
+        //        case DistanceUnit.Miles:
+        //            return new Distance
+        //            {
+        //                Value = distanceMiles,
+        //                Unit = DistanceUnit.Miles
+        //            };
+        //        case DistanceUnit.Kilometers:
+        //            return new Distance
+        //            {
+        //                Value = distanceMiles * 1.609344D,
+        //                Unit = DistanceUnit.Kilometers
+        //            };
+        //        case DistanceUnit.NauticalMiles:
+        //            return new Distance
+        //            {
+        //                Value = distanceMiles * 0.8684D,
+        //                Unit = DistanceUnit.NauticalMiles
+        //            };
+        //        default:
+        //            throw new Exception("Unknown distance unit: " + unit);
+        //    }
+        //}
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Device.Location;
 using NetatmoBot.Model;
 
 namespace NetatmoBot.Helpers.Location
@@ -6,56 +7,20 @@ namespace NetatmoBot.Helpers.Location
     public class LocationHelper
     {
         /// <summary>
-        /// Compute distance between two points. From http://www.geodatasource.com/developers/c-sharp
+        /// Compute distance between two points.
         /// </summary>
         /// <param name="point2"></param>
-        /// <param name="unit"></param>
         /// <param name="point1"></param>
+        /// <see cref="https://msdn.microsoft.com/en-us/library/system.device.location.geocoordinate.aspx"/>
         /// <returns></returns>
-        public static Distance ComputeDistance(LatLongPoint point1, LatLongPoint point2, DistanceUnit unit)
+        public static Distance ComputeDistance(LatLongPoint point1, LatLongPoint point2)
         {
-            double theta = point1.Longitude - point1.Longitude;
+            var p1 = new GeoCoordinate(point1.Latitude, point1.Longitude);
+            var p2 = new GeoCoordinate(point2.Latitude, point2.Longitude);
 
-            double distanceRadians = Math.Sin(DegreesToRadians(point1.Latitude)) *
-                Math.Sin(DegreesToRadians(point2.Latitude)) +
-                    Math.Cos(DegreesToRadians(point1.Latitude)) *
-                    Math.Cos(DegreesToRadians(point2.Latitude)) *
-                    Math.Cos(DegreesToRadians(theta));
+            var distanceMeters = p1.GetDistanceTo(p2);
 
-            distanceRadians = Math.Acos(distanceRadians);
-
-            var distanceDegrees = RadiansToDegrees(distanceRadians);
-
-            distanceDegrees = distanceDegrees * 60 * 1.1515;
-
-            return CreateDistanceByUnit(unit, distanceDegrees);
-        }
-
-        private static Distance CreateDistanceByUnit(DistanceUnit unit, double distanceMiles)
-        {
-            switch (unit)
-            {
-                case DistanceUnit.Miles:
-                    return new Distance
-                    {
-                        Value = distanceMiles,
-                        Unit = DistanceUnit.Miles
-                    };
-                case DistanceUnit.Kilometers:
-                    return new Distance
-                    {
-                        Value = distanceMiles * 1.609344D,
-                        Unit = DistanceUnit.Kilometers
-                    };
-                case DistanceUnit.NauticalMiles:
-                    return new Distance
-                    {
-                        Value = distanceMiles * 0.8684D,
-                        Unit = DistanceUnit.NauticalMiles
-                    };
-                default:
-                    throw new Exception("Unknown distance unit: " + unit);
-            }
+            return new Distance { Value = distanceMeters, Unit = DistanceUnit.Meters };
         }
 
         public static double DegreesToRadians(double degrees)

@@ -68,8 +68,6 @@ namespace NetatmoBot.Model
             return Math.Sqrt((An * An + Bn * Bn) / (Ad * Ad + Bd * Bd));
         }
 
-
-
         public override string ToString()
         {
             return string.Format("MinPoint: {0}, MaxPoint: {1}", NorthEast, SouthWest);

@@ -5,5 +5,6 @@ namespace NetatmoBot.Model
         Miles,
         Kilometers,
         NauticalMiles,
+        Meters
     }
 }
